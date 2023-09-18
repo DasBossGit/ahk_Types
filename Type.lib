@@ -1,0 +1,173 @@
+msgbox % ()
+    new Type("car", {name: "Ford", engine: "V8", hp: 500})
+
+class Type {
+    static __types := this.types_provider.__new()
+    static __primitives := {character: ["chr","char","character"]
+            ,string:["str","string"]
+            ,int:["number","decimal","int","int16","int32","int64"]
+            ,uint:["uint","uint16","uint32","uint64"]
+            ,float:["float","float32","float64"]
+            ,double:["double"]
+            ,bool:["bool","boolean"]}
+    class types_provider {
+        __new() {
+            r := [{name: "character", value: ["char", "chr", "character"], length: {min: 0, max: 1}, match: {value: "."}}
+                    , {name: "string", value: ["str", "string"], length: {min: 0, max: -1}, match: {value: "."}}
+                    , {name: "Int", value: ["number", "decimal", "int", "int16", "int32", "int64"], length: {min: [-(1<<63),-(1<<63),-(1<<63),-(1<<15),-(1<<31),-(1<<63)], max: [(1<<63)-1,(1<<63)-1,(1<<63)-1,(1<<15)-1,(1<<31)-1,(1<<63)-1]}, match: {value: "."}, default: 0}
+                    , {name: "UInt", value: ["uint", "uint16", "uint32", "uint64"], length: {min: [-(1<<63),-(1<<15),-(1<<31),-(1<<63)], max: [(1<<63)-1,(1<<15)-1,(1<<31)-1,(1<<63)-1]}, match: {value: "."}, default: 0}
+                    , {name: "Float", value: ["float", "float32", "float64"], length: {min: 0, max: -1}, match: {value: "."}, default: 0}
+                    , {name: "Double", value: ["double"], length: {min: 0, max: -1}, match: {value: "."}, default: 0}
+                    , {name: "Boolean", value: ["bool", "boolean"], length: {min: 1, max: 1}, match: {value: "."}, default: 0}]
+
+
+        }
+    }
+
+    /**
+    * Construct a new Type object with the specified type.
+    *
+    * **Parameters:**
+    * - **type** _{string}_ - The type of the object.
+    * - **value** _{string}_ - The value of the object.
+    *
+    * **Returns:**
+    *  - **Type** _{typeObject}_ - The new Type object.
+    *  - **False** _{bool}_ - Invalid type.
+    *
+    * **Example:**
+    *
+    * Car := new Type("Car", {Name: "Ford", Engine: "V8", HP: 500})
+    */
+    __new(type, value := "") {
+
+        ;this.functor := new this.functor(this)
+        this.functor.__dump()
+        for k, v in this.__types {
+            if (type = v.Name) {
+                this.__type := v
+                break
+            }
+        }
+        if !(this.__type) {
+            for k, v in this.__types {
+                if (type = v.Value) {
+                    this.__type := v
+                    break
+                }
+            }
+        }
+        ;if !(this.__type) {
+        ;    for k, v in this.__primitives {
+        ;        if (r :=this.functor.value.functor.__inArr(v, type)) {
+        ;            this.__type := {name:k, value:v[r]}
+        ;            break
+        ;        }
+        ;    }
+        ;}
+        return this
+
+    }
+    /*
+    value[]
+    {
+    get {
+
+    }
+    set {
+
+    }
+    }
+    */
+    class template {
+        __new(typeObject, value := "") {
+            this.__Type := typeObject
+            this.value := value
+        }
+        add(name, typeObject) {
+            this.__Type[name] := value
+        }
+    }
+    validate(value) {
+        ;return value instanceof this.__Type;
+    }
+    GetType() {
+        /*
+        return {this.__Type: this.functor.__dump(true)}
+        */
+    }
+    class functor {
+        __new(parent) {
+            this.parent := parent
+        }
+        __dump(obfuscate := false) {
+            return
+
+        }
+        class value {
+            __new(type, value := "") {
+                this.__Type := type
+                this.value := this.__Validate(value)
+            }
+            __Set(name, value) {
+                ObjRawSet(this, name, value)
+            }
+            __Get(type := false) {
+                return
+            }
+            __Validate(value) {
+                /*  Switch true {
+                case (this.functor.__inArr(["bool","boolean"], this.__Type)) : {
+                }
+                case (this.functor.__inArr(["number","int","int16","int32","int64","uint","uint16","uint32","uint64","float","float32","float64","double","decimal"], this.__Type)) : {
+                }
+                case (this.functor.__inArr(["str","string"], this.__Type)) : {
+                }
+                case (this.functor.__inArr(["chr","char"], this.__Type)) : {
+                }
+                case (this.functor.__inArr(["array","object"], this.__Type)) : {
+                Switch this.__Type {
+                case "array" : {
+                }
+                case "object" : {
+                }
+                }
+                }
+                }
+                */
+            }
+            class functor {
+                __inArr(haystack, needle) {
+                    if needle.Count() > 0 {
+                        if (haystack.Length() = 0)
+                            return false
+                        for index, value in haystack
+                            for k, v in needle
+                                if (value = v)
+                                    return index
+                        return false
+                    } else {
+                        if !(IsObject(haystack)) || (haystack.Length() = 0)
+                            return false
+                        for index, value in haystack
+                            if (value = needle)
+                                return index
+                        return false
+                    }
+                }
+
+            }
+        }
+    }
+}
+
+
+
+/*
+
+
+
+
+
+
+*/
